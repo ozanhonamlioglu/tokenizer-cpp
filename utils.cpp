@@ -7,10 +7,11 @@
 namespace utils {
     std::vector<unsigned char> readFile(const std::string &fileName) {
         std::ifstream file(fileName, std::ios::binary);
+        std::vector<unsigned char> buffer;
 
         if (!file.is_open()) {
             std::cerr << "Error: Could not open file '" << fileName << "'" << std::endl;
-            return {};
+            return buffer;
         }
 
         file.seekg(0, std::ios::end);
@@ -19,10 +20,10 @@ namespace utils {
 
         if (file_size < 0) {
             std::cerr << "Error: Could not determine file size or file is empty." << std::endl;
-            return {};
+            return buffer;
         }
 
-        std::vector<unsigned char> buffer(file_size);
+        buffer.resize(file_size);
 
         file.seekg(0, std::ios_base::beg);
 
@@ -56,5 +57,32 @@ namespace utils {
         );
 
         return max->first;
+    }
+
+    std::optional<std::pair<int, int> > getMinByMerges(const std::map<std::pair<int, int>, int> &stats,
+                                                       const std::vector<std::pair<std::pair<int, int>,
+                                                           int> > &
+                                                       merges) {
+        std::optional<std::pair<std::pair<int, int>, int> > foundPair = std::nullopt;
+
+        for (const auto &p: stats) {
+            const auto sk = p.first;
+
+            for (const auto &m: merges) {
+                auto const mk = m.first;
+
+                if (sk == mk) {
+                    if (foundPair == std::nullopt || m.second < foundPair->second) {
+                        foundPair = m;
+                    }
+                }
+            }
+        }
+
+        if (foundPair) {
+            return foundPair->first;
+        }
+
+        return std::nullopt;
     }
 }

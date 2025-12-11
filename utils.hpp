@@ -28,4 +28,8 @@ namespace utils {
     std::vector<unsigned char> readFile(const std::string &fileName);
 
     std::pair<int, int> getMax(const std::map<std::pair<int, int>, int> &list);
+
+    std::optional<std::pair<int, int> > getMinByMerges(const std::map<std::pair<int, int>, int> &stats,
+                                                       const std::vector<std::pair<std::pair<int, int>, int> > &
+                                                       merges);
 }
