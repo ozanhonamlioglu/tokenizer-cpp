@@ -1,4 +1,4 @@
-# Basic LLM Tokenizer
+# BPE Tokenizer
 - with 95KB text file
 - setting 1000 vocab size  
 
